@@ -56,3 +56,12 @@ ALLOWED_HOSTS = (".appspot.com", )
 DJANGAE_RUNSERVER_IGNORED_FILES_REGEXES = ['^.+$(?<!\.py)(?<!\.yaml)(?<!\.html)']
 # Note that these should match a directory name, not directory path:
 DJANGAE_RUNSERVER_IGNORED_DIR_REGEXES = [r"^google_appengine$"]
+
+
+# Currently there's no way of telling whether a user is an app owner, editor
+# or a viewer (and it doesn't look like happening any time soon
+# https://code.google.com/p/googleappengine/issues/detail?id=4897).
+#
+# In some cases (like /_admin access) we don't want ALL appengine users to have superuser access.
+# Therefore this list.
+DJANGO_SUPERUSERS = []

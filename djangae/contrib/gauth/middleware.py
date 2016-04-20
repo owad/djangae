@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout, get_user, BACKEND_SESSION_KEY, load_backend
 from django.contrib.auth.middleware import AuthenticationMiddleware as DjangoMiddleware
 from django.contrib.auth.models import BaseUserManager, AnonymousUser
@@ -43,6 +44,11 @@ class AuthenticationMiddleware(DjangoMiddleware):
         if django_user.is_authenticated():
             # Now make sure we update is_superuser and is_staff appropriately
             is_superuser = users.is_current_user_admin()
+
+            # Make sure we really want to give the GAE user a superuser access
+            if getattr(settings, 'DJANGO_SUPERUSERS', None):
+                is_superuser = google_user.email() in settings.DJANGO_SUPERUSERS
+
             resave = False
 
             if is_superuser != django_user.is_superuser:
